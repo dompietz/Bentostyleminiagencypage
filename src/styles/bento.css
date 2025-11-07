@@ -18,14 +18,10 @@
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   grid-auto-rows: minmax(0, auto);
-  grid-template-areas:
-    "hero hero hero hero hero hero hero hero box2 box2 box2 box2"
-    "hero hero hero hero hero hero hero hero box3 box3 box3 box3"
-    "box4 box4 box4 box4 box4 box5 box5 box5 box6 box6 box6 box6";
   gap: clamp(1rem, 0.75vw + 0.75rem, 1.5rem);
   position: relative;
   z-index: 1;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* Individual Bento Boxes */
@@ -52,25 +48,21 @@
 
 /* Large Video Box */
 .bento-box-large {
-  grid-area: hero;
+  grid-column: 1 / span 8;
+  grid-row: 1 / span 2;
   padding: 0;
   overflow: hidden;
   border-radius: 1.5rem;
   aspect-ratio: 16 / 9;
-  min-height: clamp(560px, 56vh, 820px);
+  min-height: clamp(320px, 45vh, 540px);
+  display: block;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  flex: none;
 }
 
 .bento-box-large video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  flex: 1 1 auto;
-  display: block;
 }
 
 /* Video Slider Navigation */
@@ -167,8 +159,10 @@
 /* Box 2 */
 .bento-box-2 {
   grid-area: box2;
-  padding: clamp(1rem, 0.55vw + 0.75rem, 1.5rem);
-  gap: clamp(0.45rem, 0.35vw + 0.3rem, 0.85rem);
+  padding: clamp(1.1rem, 0.65vw + 0.85rem, 1.6rem);
+  gap: clamp(0.5rem, 0.4vw + 0.35rem, 0.9rem);
+  grid-column: 9 / span 4;
+  grid-row: 1;
 }
 
 .bento-box-2:hover {
@@ -186,6 +180,8 @@
 /* Box 3 */
 .bento-box-3 {
   grid-area: box3;
+  grid-column: 9 / span 4;
+  grid-row: 2;
 }
 
 .bento-box-3:hover {
@@ -221,11 +217,17 @@
   gap: clamp(0.75rem, 0.5vw + 0.5rem, 1.25rem);
   aspect-ratio: 16 / 9;
   min-height: clamp(320px, 45vh, 540px);
+  grid-column: 1 / span 8;
+  grid-row: 1 / span 2;
+  z-index: 2;
+  width: 100%;
 }
 
 /* Box 6 */
 .bento-box-6 {
   grid-area: box6;
+  grid-column: 9 / span 4;
+  grid-row: 3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -265,14 +267,14 @@
 
 .bento-box p {
   margin: 0;
-  line-height: clamp(1.52, 0.18vw + 1.38, 1.75);
+  line-height: clamp(1.5, 0.22vw + 1.35, 1.7);
   color: #000000;
-  font-size: clamp(0.9rem, 0.26vw + 0.78rem, 1.06rem);
+  font-size: clamp(0.92rem, 0.28vw + 0.82rem, 1.08rem);
 }
 
 .bento-box-2 p {
-  font-size: clamp(0.74rem, 0.14vw + 0.66rem, 0.9rem);
-  line-height: clamp(1.46, 0.12vw + 1.32, 1.68);
+  font-size: clamp(0.85rem, 0.22vw + 0.78rem, 0.98rem);
+  line-height: clamp(1.45, 0.2vw + 1.3, 1.6);
 }
 
 .contact-line {
@@ -281,6 +283,9 @@
 
 .contact-line:last-of-type {
   margin-bottom: 0;
+  line-height: clamp(1.55, 0.25vw + 1.4, 1.75);
+  color: #000000;
+  font-size: clamp(0.95rem, 0.4vw + 0.85rem, 1.1rem);
 }
 
 /* See More Button */
@@ -307,25 +312,42 @@
 @media (max-width: 1024px) {
   .bento-grid {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: clamp(1rem, 2vw + 0.5rem, 1.75rem);
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    grid-template-areas:
+      "hero hero hero hero hero hero hero hero"
+      "box2 box2 box2 box2 box2 box2 box2 box2"
+      "box3 box3 box3 box3 box3 box3 box3 box3"
+      "box4 box4 box4 box4 box4 box4 box4 box4"
+      "box5 box5 box5 box5 box5 box5 box5 box5"
+      "box6 box6 box6 box6 box6 box6 box6 box6";
   }
 
   .bento-box {
     border-radius: 1.1rem;
-    width: 100%;
   }
 
-  .bento-box-large {
-    aspect-ratio: 16 / 9;
-    min-height: clamp(280px, 56vw, 520px);
-  }
-
+  .bento-box-large,
   .bento-box-5-expanded {
-    aspect-ratio: auto;
-    min-height: auto;
+    aspect-ratio: 16 / 9;
+    min-height: clamp(280px, 45vw, 520px);
+  }
+
+  .bento-box-large,
+  .bento-box-5-expanded {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    aspect-ratio: 16 / 9;
+    min-height: clamp(280px, 45vw, 520px);
+  }
+
+  .bento-box-2,
+  .bento-box-3,
+  .bento-box-4,
+  .bento-box-5,
+  .bento-box-6 {
+    grid-column: span 4;
+    grid-row: auto;
   }
 
   .slider-nav {
@@ -347,17 +369,30 @@
     padding: clamp(1rem, 4vw, 1.5rem);
   }
 
+  .bento-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(0.75rem, 3vw, 1.25rem);
+    grid-template-areas:
+      "hero hero hero hero"
+      "box2 box2 box2 box2"
+      "box3 box3 box3 box3"
+      "box4 box4 box4 box4"
+      "box5 box5 box5 box5"
+      "box6 box6 box6 box6";
+  }
+
   .bento-box {
+  }
+
+  .bento-box {
+    grid-column: span 4;
     border-radius: 1rem;
     padding: clamp(1.25rem, 4vw + 0.5rem, 1.75rem);
   }
 
-  .bento-box-large {
-    min-height: clamp(240px, 55vw, 420px);
-  }
-
+  .bento-box-large,
   .bento-box-5-expanded {
-    min-height: auto;
+    min-height: clamp(240px, 55vw, 420px);
   }
 
   .bento-box h3 {
