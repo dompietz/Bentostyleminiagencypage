@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import "../styles/bento.css";
@@ -24,6 +24,28 @@ export function BentoGrid() {
 
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isClipCastingExpanded, setIsClipCastingExpanded] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isNarrowLayout, setIsNarrowLayout] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setPrefersReducedMotion(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(max-width: 640px)");
+    const update = () => setIsNarrowLayout(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  const pauseAnimations = prefersReducedMotion;
 
   const nextVideo = () => {
     setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
@@ -41,16 +63,16 @@ export function BentoGrid() {
 
   return (
     <div className="bento-container">
-      <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: 0 }}>
         <PrismaticBurst
           animationType="rotate3d"
-          intensity={2}
+          intensity={pauseAnimations ? 1.2 : isNarrowLayout ? 1.6 : 2}
           speed={0.5}
           distort={1.0}
-          paused={false}
+          paused={pauseAnimations}
           offset={{ x: 0, y: 0 }}
           hoverDampness={0.25}
-          rayCount={24}
+          rayCount={pauseAnimations ? 8 : isNarrowLayout ? 18 : 24}
           mixBlendMode="lighten"
           colors={['#ff007a', '#4d3dff', '#ffffff']}
         />
@@ -158,8 +180,11 @@ export function BentoGrid() {
               transition={{ duration: 0.3 }}
             >
               <h3>Clip Casting</h3>
-              <p>Filler Text...</p>
-              
+              <p>
+                Clip Casting distills your long-form shoots into ready-to-post stories
+                without sacrificing craft.
+              </p>
+
               <motion.button
                 className="see-more-btn"
                 onClick={() => setIsClipCastingExpanded(true)}
@@ -179,8 +204,16 @@ export function BentoGrid() {
               transition={{ duration: 0.3 }}
             >
               <h3>Clip Casting</h3>
-              <p>Filler Text...</p>
-              
+              <p>
+                Clip Casting is our editorial partner program for marketing teams that
+                need a weekly cadence of video. We capture a single interview or
+                workshop and deliver multiple platform-specific edits that stay on-brand.
+              </p>
+              <p>
+                Expect strategic scripting, on-set direction, and final deliverables
+                optimized for paid, organic, and sales enablement.
+              </p>
+
               <motion.button
                 className="see-more-btn"
                 onClick={() => setIsClipCastingExpanded(false)}
@@ -194,18 +227,21 @@ export function BentoGrid() {
         </AnimatePresence>
 
         {/* Box 6 */}
-        <div className="bento-box bento-box-6" style={{ position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+        <div className="bento-box bento-box-6">
+          <div className="laser-flow-surface">
             <LaserFlow
               horizontalBeamOffset={0.0}
               verticalBeamOffset={-0.5}
               color="#0D40FF"
               verticalSizing={1.5}
               horizontalSizing={0.75}
+              paused={pauseAnimations}
+              dpr={isNarrowLayout ? 1 : undefined}
             />
           </div>
-          <div style={{ position: 'relative', zIndex: 1 }}>
+          <div className="bento-box-6-content">
             <h3>New Site coming soon</h3>
+            <p>We&apos;re polishing the experience—sign up soon to see what&apos;s next.</p>
           </div>
         </div>
       </div>
