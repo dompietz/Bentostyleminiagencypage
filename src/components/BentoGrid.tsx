@@ -2,9 +2,9 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import "../styles/bento.css";
-import clixLogo from "figma:asset/d4ccda0b8d7b3374a3213e01565105452ea354ed.png";
 import PrismaticBurst from "./PrismaticBurst";
 import LaserFlow from "./LaserFlow";
+import ClixLogo from "../assets/ClixLogo.png";
 
 export function BentoGrid() {
   const videos = [
@@ -118,15 +118,15 @@ export function BentoGrid() {
 
         {/* Box 2 */}
         <div className="bento-box bento-box-2">
-          <img src={clixLogo} alt="Clix Logo" className="clix-logo" />
+          <img src={ClixLogo} alt="Clix Logo" className="clix-logo" />
           <p style={{ fontSize: '0.875rem' }}>At Clix Productions, we're all about making real connections through video. We know the digital world is crowded, so we focus on telling stories that not only get noticed but also felt. Working hand-in-hand with marketing pros and industry leaders, we turn your complex messages into clear, relatable stories.</p>
         </div>
 
         {/* Box 3 */}
         <div className="bento-box bento-box-3">
           <h3>Work with Us</h3>
-          <p style={{ marginBottom: '0.5rem' }}>Email: hello@clixproductions.com</p>
-          <p style={{ marginBottom: '0.5rem' }}>Phone: +45 12 34 56 78</p>
+          <p style={{ marginBottom: '0.5rem' }}>Email: info@clixproductions.com</p>
+          <p style={{ marginBottom: '0.5rem' }}>Phone: +45 28766105</p>
           <p>Copenhagen, Denmark</p>
         </div>
 
@@ -141,14 +141,11 @@ export function BentoGrid() {
               transition={{ duration: 0.3 }}
             >
               <h3>Our Approach</h3>
-              <p>Filler Text...</p>
+              <p>Content is much like our office plant, Brimble: everyone agrees he should look great, but nobody remembers to water him. He needs attention, sunlight, trimming, and the occasional pep talk; and when he’s neglected, it shows. He also needs the right spot; because if he’s left in the wrong corner, he wilts, even if the intentions were good.
+</p>
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Box 5 - Clip Casting */}
-        {/* Placeholder to maintain grid structure */}
-        {isClipCastingExpanded && <div className="bento-box-5-placeholder" />}
         
         <AnimatePresence>
           {!isClipCastingExpanded ? (
@@ -209,7 +206,6 @@ export function BentoGrid() {
           </div>
           <div style={{ position: 'relative', zIndex: 1 }}>
             <h3>New Site coming soon</h3>
-            <p>Filler Text...</p>
           </div>
         </div>
       </div>

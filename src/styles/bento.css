@@ -30,7 +30,8 @@
   border-radius: 1rem;
   padding: 2rem;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden;   <-- remove this */
+  overflow: visible;      /* allow content to extend within the row */
   transition: all 0.3s ease;
   box-sizing: border-box;
   background: white;
@@ -50,6 +51,7 @@
   grid-column: span 8;
   grid-row: span 2;
   padding: 0;
+  overflow: hidden;   /* video stays nicely clipped */
 }
 
 .bento-box-large video {
@@ -204,12 +206,9 @@
 
 /* Box 5 Expanded State */
 .bento-box-5-expanded {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: calc((100% + 1rem) * 8 / 12 - 1rem);
-  height: calc(100% - 1rem);
-  z-index: 10;
+  grid-column: 1 / span 8;   /* same footprint as .bento-box-large */
+  grid-row: 1 / span 3;
+  z-index: 2;
 }
 
 /* Box 6 */
@@ -217,6 +216,10 @@
   grid-column: 9 / span 4;
   grid-row: 3;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .bento-box-6:hover {
@@ -225,7 +228,7 @@
 
 .bento-box h3 {
   margin: 0 0 0.75rem 0;
-  font-size: 1.875rem;
+  font-size: clamp(1.4rem, 1.3vw + 1rem, 1.875rem);
   color: #000000;
 }
 
@@ -233,6 +236,7 @@
   margin: 0;
   line-height: 1.6;
   color: #000000;
+  font-size: clamp(0.9rem, 0.35vw + 0.8rem, 1rem);
   display: -webkit-box;
   -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;
@@ -261,39 +265,58 @@
 /* Responsive Design */
 
 @media (max-width: 1024px) {
+  .bento-container {
+    height: auto;          /* was 100vh via base rule */
+    min-height: 100vh;     /* still fill tall screens */
+    align-items: flex-start;
+  }
+
   .bento-grid {
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: auto auto auto;   /* was 1.3fr 1fr 1fr */
+    height: auto;                         /* allow rows to expand */
+  }
+
+
+  .bento-box p {
+    -webkit-line-clamp: unset;
+    display: block;
   }
 
   .bento-box-large {
-    grid-column: span 8;
-    grid-row: span 2;
+    grid-column: 1 / span 5;  /* left */
+    grid-row: 1 / span 2;
   }
 
   .bento-box-2 {
-    grid-column: span 4;
+    grid-column: 6 / span 3;  /* top right */
+    grid-row: 1;
   }
 
   .bento-box-3 {
-    grid-column: span 4;
+    grid-column: 6 / span 3;  /* middle right */
+    grid-row: 2;
   }
 
   .bento-box-4 {
-    grid-column: span 5;
+    grid-column: 1 / span 3;  /* bottom left */
+    grid-row: 3;
   }
 
-  .bento-box-5 {
-    grid-column: span 3;
+  .bento-box-5,
+  .bento-box-5-placeholder {
+    grid-column: 4 / span 2;  /* bottom middle */
+    grid-row: 3;
   }
 
   .bento-box-5-expanded {
-    grid-column: span 8;
-    grid-row: span 2;
-  }
+    grid-column: 1 / span 5;
+    grid-row: 1 / span 2;
+    }
 
   .bento-box-6 {
-    grid-column: span 8;
+    grid-column: 6 / span 3;  /* bottom right */
+    grid-row: 3;
   }
 }
 
@@ -342,7 +365,9 @@
   }
 
   .bento-box-large .video-overlay h3 {
-    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+    font-size: clamp(1.4rem, 2vw, 2rem);
+    color: white;
   }
 
   .slider-nav {
