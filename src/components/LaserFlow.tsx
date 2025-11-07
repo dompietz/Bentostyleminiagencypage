@@ -7,6 +7,7 @@ type Props = {
   style?: React.CSSProperties;
   wispDensity?: number;
   dpr?: number;
+  paused?: boolean;
   mouseSmoothTime?: number;
   mouseTiltStrength?: number;
   horizontalBeamOffset?: number;
@@ -266,6 +267,7 @@ export const LaserFlow: React.FC<Props> = ({
   style,
   wispDensity = 1,
   dpr,
+  paused = false,
   mouseSmoothTime = 0.0,
   mouseTiltStrength = 0.01,
   horizontalBeamOffset = 0.1,
@@ -294,8 +296,19 @@ export const LaserFlow: React.FC<Props> = ({
   const fpsSamplesRef = useRef<number[]>([]);
   const lastFpsCheckRef = useRef<number>(performance.now());
   const emaDtRef = useRef<number>(16.7); // ms
-  const pausedRef = useRef<boolean>(false);
+  const pausedRef = useRef<boolean>(paused);
+  const externalPausedRef = useRef<boolean>(paused);
   const inViewRef = useRef<boolean>(true);
+  const sceneRef = useRef<THREE.Scene | null>(null);
+  const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
+
+  const renderFrame = () => {
+    const renderer = rendererRef.current;
+    const scene = sceneRef.current;
+    const camera = cameraRef.current;
+    if (!renderer || !scene || !camera) return;
+    renderer.render(scene, camera);
+  };
 
   const hexToRGB = (hex: string) => {
     let c = hex.trim();
@@ -339,6 +352,8 @@ export const LaserFlow: React.FC<Props> = ({
 
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    sceneRef.current = scene;
+    cameraRef.current = camera;
 
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([-1, -1, 0, 3, -1, 0, -1, 3, 0]), 3));
@@ -408,9 +423,7 @@ export const LaserFlow: React.FC<Props> = ({
       uniforms.iResolution.value.set(w * pr, h * pr, pr);
       rectRef.current = canvas.getBoundingClientRect();
 
-      if (!pausedRef.current) {
-        renderer.render(scene, camera);
-      }
+      renderFrame();
     };
 
     let resizeRaf = 0;
@@ -432,7 +445,7 @@ export const LaserFlow: React.FC<Props> = ({
     io.observe(mount);
 
     const onVis = () => {
-      pausedRef.current = document.hidden;
+      pausedRef.current = document.hidden || externalPausedRef.current;
     };
     document.addEventListener('visibilitychange', onVis, { passive: true });
 
@@ -504,7 +517,10 @@ export const LaserFlow: React.FC<Props> = ({
 
     const animate = () => {
       raf = requestAnimationFrame(animate);
-      if (pausedRef.current || !inViewRef.current) return;
+      if (pausedRef.current || !inViewRef.current) {
+        prevTime = clock.getElapsedTime();
+        return;
+      }
 
       const t = clock.getElapsedTime();
       const dt = Math.max(0, t - prevTime);
@@ -599,6 +615,13 @@ export const LaserFlow: React.FC<Props> = ({
     fogFallSpeed,
     color
   ]);
+
+  useEffect(() => {
+    externalPausedRef.current = paused;
+    const docHidden = typeof document !== 'undefined' ? document.hidden : false;
+    pausedRef.current = paused || docHidden;
+    renderFrame();
+  }, [paused]);
 
   return <div ref={mountRef} className={`laser-flow-container ${className || ''}`} style={style} />;
 };
