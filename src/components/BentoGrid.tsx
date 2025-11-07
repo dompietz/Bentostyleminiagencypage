@@ -141,15 +141,21 @@ export function BentoGrid() {
         {/* Box 2 */}
         <div className="bento-box bento-box-2">
           <img src={ClixLogo} alt="Clix Logo" className="clix-logo" />
-          <p style={{ fontSize: '0.875rem' }}>At Clix Productions, we're all about making real connections through video. We know the digital world is crowded, so we focus on telling stories that not only get noticed but also felt. Working hand-in-hand with marketing pros and industry leaders, we turn your complex messages into clear, relatable stories.</p>
+          <p>
+            At Clix Productions, we&apos;re all about making real connections through
+            video. The digital world is crowded, so we focus on telling stories
+            that not only get noticed but also felt. Working hand-in-hand with
+            marketing pros and industry leaders, we turn complex messages into
+            clear, relatable stories.
+          </p>
         </div>
 
         {/* Box 3 */}
         <div className="bento-box bento-box-3">
           <h3>Work with Us</h3>
-          <p style={{ marginBottom: '0.5rem' }}>Email: info@clixproductions.com</p>
-          <p style={{ marginBottom: '0.5rem' }}>Phone: +45 28766105</p>
-          <p>Copenhagen, Denmark</p>
+          <p className="contact-line">Email: info@clixproductions.com</p>
+          <p className="contact-line">Phone: +45 28766105</p>
+          <p className="contact-line">Copenhagen, Denmark</p>
         </div>
 
         {/* Box 4 */}
