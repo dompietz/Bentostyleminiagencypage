@@ -57,7 +57,7 @@
   overflow: hidden;
   border-radius: 1.5rem;
   aspect-ratio: 16 / 9;
-  min-height: clamp(420px, 52vh, 640px);
+  min-height: clamp(560px, 56vh, 820px);
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -167,8 +167,8 @@
 /* Box 2 */
 .bento-box-2 {
   grid-area: box2;
-  padding: clamp(1.1rem, 0.65vw + 0.85rem, 1.6rem);
-  gap: clamp(0.5rem, 0.4vw + 0.35rem, 0.9rem);
+  padding: clamp(1rem, 0.55vw + 0.75rem, 1.5rem);
+  gap: clamp(0.45rem, 0.35vw + 0.3rem, 0.85rem);
 }
 
 .bento-box-2:hover {
@@ -265,14 +265,14 @@
 
 .bento-box p {
   margin: 0;
-  line-height: clamp(1.5, 0.22vw + 1.35, 1.7);
+  line-height: clamp(1.52, 0.18vw + 1.38, 1.75);
   color: #000000;
-  font-size: clamp(0.92rem, 0.28vw + 0.82rem, 1.08rem);
+  font-size: clamp(0.9rem, 0.26vw + 0.78rem, 1.06rem);
 }
 
 .bento-box-2 p {
-  font-size: clamp(0.82rem, 0.12vw + 0.76rem, 0.95rem);
-  line-height: clamp(1.45, 0.14vw + 1.32, 1.65);
+  font-size: clamp(0.74rem, 0.14vw + 0.66rem, 0.9rem);
+  line-height: clamp(1.46, 0.12vw + 1.32, 1.68);
 }
 
 .contact-line {
