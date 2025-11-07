@@ -247,6 +247,7 @@ export function BentoGrid() {
           </div>
           <div className="bento-box-6-content">
             <h3>New Site coming soon</h3>
+            <p>We&apos;re polishing the experience—sign up soon to see what&apos;s next.</p>
           </div>
         </div>
       </div>

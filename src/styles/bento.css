@@ -21,7 +21,7 @@
   gap: clamp(1rem, 0.75vw + 0.75rem, 1.5rem);
   position: relative;
   z-index: 1;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* Individual Bento Boxes */
@@ -39,7 +39,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  min-height: max-content;
 }
 
 .bento-box:hover {
@@ -56,18 +55,14 @@
   border-radius: 1.5rem;
   aspect-ratio: 16 / 9;
   min-height: clamp(320px, 45vh, 540px);
+  display: block;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
 }
 
 .bento-box-large video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  flex: 1 1 auto;
-  display: block;
 }
 
 /* Video Slider Navigation */
@@ -215,13 +210,6 @@
   grid-row: 1 / span 2;
   z-index: 2;
   width: 100%;
-  padding: clamp(1.75rem, 1vw + 1.5rem, 2.5rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: clamp(0.75rem, 0.5vw + 0.5rem, 1.25rem);
-  aspect-ratio: 16 / 9;
-  min-height: clamp(320px, 45vh, 540px);
 }
 
 /* Box 6 */
@@ -269,15 +257,7 @@
   margin: 0;
   line-height: clamp(1.55, 0.25vw + 1.4, 1.75);
   color: #000000;
-  font-size: clamp(0.98rem, 0.35vw + 0.9rem, 1.18rem);
-}
-
-.contact-line {
-  margin-bottom: 0.35rem;
-}
-
-.contact-line:last-of-type {
-  margin-bottom: 0;
+  font-size: clamp(0.95rem, 0.4vw + 0.85rem, 1.1rem);
 }
 
 /* See More Button */
