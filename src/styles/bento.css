@@ -255,7 +255,7 @@
 
 .bento-box p {
   margin: 0;
-  line-height: 1.6;
+  line-height: clamp(1.55, 0.25vw + 1.4, 1.75);
   color: #000000;
   font-size: clamp(0.95rem, 0.4vw + 0.85rem, 1.1rem);
 }
