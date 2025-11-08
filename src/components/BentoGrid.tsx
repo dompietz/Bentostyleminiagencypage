@@ -6,8 +6,42 @@ import PrismaticBurst from "./PrismaticBurst";
 import LaserFlow from "./LaserFlow";
 import ClixLogo from "../assets/ClixLogo.png";
 
-export function BentoGrid() {
-  const videos = [
+export type BentoGridVideo = {
+  src: string;
+  title: string;
+  description?: string;
+};
+
+export type BentoGridContent = {
+  heroVideos: BentoGridVideo[];
+  about: {
+    logoSrc?: string;
+    logoAlt?: string;
+    body: string;
+  };
+  contact: {
+    heading: string;
+    lines: string[];
+  };
+  approach: {
+    heading: string;
+    paragraphs: string[];
+  };
+  clipCasting: {
+    heading: string;
+    summary: string;
+    details: string[];
+    expandLabel?: string;
+    collapseLabel?: string;
+  };
+  announcement: {
+    heading: string;
+    body: string;
+  };
+};
+
+export const defaultBentoGridContent: BentoGridContent = {
+  heroVideos: [
     {
       src: "https://video.gumlet.io/66daaec13cf16cc4bf016f23/678a4f888169b1868c8db038/download.mp4",
       title: "TechBBQ",
@@ -20,7 +54,51 @@ export function BentoGrid() {
       src: "https://video.gumlet.io/66daaec13cf16cc4bf016f23/66dab65a3cf16cc4bf019846/download.mp4",
       title: "Female Invest",
     },
-  ];
+  ],
+  about: {
+    logoSrc: ClixLogo,
+    logoAlt: "Clix Productions logo",
+    body:
+      "At Clix Productions, we're all about making real connections through video. The digital world is crowded, so we focus on telling stories that not only get noticed but also felt. Working hand-in-hand with marketing pros and industry leaders, we turn complex messages into clear, relatable stories.",
+  },
+  contact: {
+    heading: "Work with Us",
+    lines: [
+      "Email: info@clixproductions.com",
+      "Phone: +45 28766105",
+      "Copenhagen, Denmark",
+    ],
+  },
+  approach: {
+    heading: "Our Approach",
+    paragraphs: [
+      "Content is much like our office plant, Brimble: everyone agrees he should look great, but nobody remembers to water him. He needs attention, sunlight, trimming, and the occasional pep talk; and when he's neglected, it shows.",
+      "He also needs the right spot; because if he's left in the wrong corner, he wilts, even if the intentions were good.",
+    ],
+  },
+  clipCasting: {
+    heading: "Clip Casting",
+    summary:
+      "Clip Casting distills your long-form shoots into ready-to-post stories without sacrificing craft.",
+    details: [
+      "Clip Casting is our editorial partner program for marketing teams that need a weekly cadence of video. We capture a single interview or workshop and deliver multiple platform-specific edits that stay on-brand.",
+      "Expect strategic scripting, on-set direction, and final deliverables optimized for paid, organic, and sales enablement.",
+    ],
+    expandLabel: "See more",
+    collapseLabel: "See less",
+  },
+  announcement: {
+    heading: "New Site coming soon",
+    body: "We're polishing the experience—sign up soon to see what's next.",
+  },
+};
+
+export type BentoGridProps = {
+  content?: BentoGridContent;
+};
+
+export function BentoGrid({ content = defaultBentoGridContent }: BentoGridProps) {
+  const videos = content.heroVideos;
 
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isClipCastingExpanded, setIsClipCastingExpanded] = useState(false);
@@ -45,21 +123,32 @@ export function BentoGrid() {
     return () => media.removeEventListener("change", update);
   }, []);
 
+  useEffect(() => {
+    setCurrentVideoIndex((prev) =>
+      videos.length === 0 ? 0 : Math.min(prev, videos.length - 1),
+    );
+  }, [videos.length]);
+
   const pauseAnimations = prefersReducedMotion;
 
   const nextVideo = () => {
+    if (videos.length === 0) return;
     setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
   };
 
   const prevVideo = () => {
+    if (videos.length === 0) return;
     setCurrentVideoIndex(
       (prev) => (prev - 1 + videos.length) % videos.length,
     );
   };
 
   const goToVideo = (index: number) => {
+    if (!videos[index]) return;
     setCurrentVideoIndex(index);
   };
+
+  const activeVideo = videos[currentVideoIndex];
 
   return (
     <div className="bento-container">
@@ -80,7 +169,7 @@ export function BentoGrid() {
       <div className="bento-grid">
         {/* Large Video Box with Slider */}
         <AnimatePresence>
-          {!isClipCastingExpanded && (
+          {!isClipCastingExpanded && activeVideo && (
             <motion.div
               className="bento-box bento-box-large"
               initial={{ opacity: 1 }}
@@ -96,7 +185,7 @@ export function BentoGrid() {
                 playsInline
               >
                 <source
-                  src={videos[currentVideoIndex].src}
+                  src={activeVideo.src}
                   type="video/mp4"
                 />
                 Your browser does not support the video tag.
@@ -120,7 +209,10 @@ export function BentoGrid() {
 
               {/* Video Info Overlay */}
               <div className="video-overlay">
-                <h3>{videos[currentVideoIndex].title}</h3>
+                <h3>{activeVideo.title}</h3>
+                {activeVideo.description && (
+                  <p>{activeVideo.description}</p>
+                )}
               </div>
 
               {/* Dots Navigation */}
@@ -140,22 +232,24 @@ export function BentoGrid() {
 
         {/* Box 2 */}
         <div className="bento-box bento-box-2">
-          <img src={ClixLogo} alt="Clix Logo" className="clix-logo" />
-          <p>
-            At Clix Productions, we&apos;re all about making real connections through
-            video. The digital world is crowded, so we focus on telling stories
-            that not only get noticed but also felt. Working hand-in-hand with
-            marketing pros and industry leaders, we turn complex messages into
-            clear, relatable stories.
-          </p>
+          {content.about.logoSrc && (
+            <img
+              src={content.about.logoSrc}
+              alt={content.about.logoAlt ?? "Bento grid logo"}
+              className="clix-logo"
+            />
+          )}
+          <p>{content.about.body}</p>
         </div>
 
         {/* Box 3 */}
         <div className="bento-box bento-box-3">
-          <h3>Work with Us</h3>
-          <p className="contact-line">Email: info@clixproductions.com</p>
-          <p className="contact-line">Phone: +45 28766105</p>
-          <p className="contact-line">Copenhagen, Denmark</p>
+          <h3>{content.contact.heading}</h3>
+          {content.contact.lines.map((line) => (
+            <p key={line} className="contact-line">
+              {line}
+            </p>
+          ))}
         </div>
 
         {/* Box 4 */}
@@ -168,9 +262,10 @@ export function BentoGrid() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <h3>Our Approach</h3>
-              <p>Content is much like our office plant, Brimble: everyone agrees he should look great, but nobody remembers to water him. He needs attention, sunlight, trimming, and the occasional pep talk; and when he’s neglected, it shows. He also needs the right spot; because if he’s left in the wrong corner, he wilts, even if the intentions were good.
-</p>
+              <h3>{content.approach.heading}</h3>
+              {content.approach.paragraphs.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
             </motion.div>
           )}
         </AnimatePresence>
@@ -185,11 +280,8 @@ export function BentoGrid() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <h3>Clip Casting</h3>
-              <p>
-                Clip Casting distills your long-form shoots into ready-to-post stories
-                without sacrificing craft.
-              </p>
+              <h3>{content.clipCasting.heading}</h3>
+              <p>{content.clipCasting.summary}</p>
 
               <motion.button
                 className="see-more-btn"
@@ -197,7 +289,7 @@ export function BentoGrid() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                See more
+                {content.clipCasting.expandLabel ?? "See more"}
               </motion.button>
             </motion.div>
           ) : (
@@ -209,16 +301,10 @@ export function BentoGrid() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <h3>Clip Casting</h3>
-              <p>
-                Clip Casting is our editorial partner program for marketing teams that
-                need a weekly cadence of video. We capture a single interview or
-                workshop and deliver multiple platform-specific edits that stay on-brand.
-              </p>
-              <p>
-                Expect strategic scripting, on-set direction, and final deliverables
-                optimized for paid, organic, and sales enablement.
-              </p>
+              <h3>{content.clipCasting.heading}</h3>
+              {content.clipCasting.details.map((detail, index) => (
+                <p key={index}>{detail}</p>
+              ))}
 
               <motion.button
                 className="see-more-btn"
@@ -226,7 +312,7 @@ export function BentoGrid() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                See less
+                {content.clipCasting.collapseLabel ?? "See less"}
               </motion.button>
             </motion.div>
           )}
@@ -246,8 +332,8 @@ export function BentoGrid() {
             />
           </div>
           <div className="bento-box-6-content">
-            <h3>New Site coming soon</h3>
-            <p>We&apos;re polishing the experience—sign up soon to see what&apos;s next.</p>
+            <h3>{content.announcement.heading}</h3>
+            <p>{content.announcement.body}</p>
           </div>
         </div>
       </div>

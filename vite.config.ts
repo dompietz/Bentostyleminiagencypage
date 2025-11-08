@@ -47,12 +47,21 @@
         '@radix-ui/react-aspect-ratio@1.1.2': '@radix-ui/react-aspect-ratio',
         '@radix-ui/react-alert-dialog@1.1.6': '@radix-ui/react-alert-dialog',
         '@radix-ui/react-accordion@1.2.3': '@radix-ui/react-accordion',
+        'react-router-dom': path.resolve(
+          __dirname,
+          './src/router/react-router-dom.tsx',
+        ),
         '@': path.resolve(__dirname, './src'),
       },
     },
     build: {
       target: 'esnext',
       outDir: 'build',
+      rollupOptions: {
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+        },
+      },
     },
     server: {
       port: 3000,
