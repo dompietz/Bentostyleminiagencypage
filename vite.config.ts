@@ -53,6 +53,12 @@
     build: {
       target: 'esnext',
       outDir: 'build',
+      rollupOptions: {
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+          test: path.resolve(__dirname, 'test.html'),
+        },
+      },
     },
     server: {
       port: 3000,
