@@ -60,6 +60,7 @@
       rollupOptions: {
         input: {
           main: path.resolve(__dirname, 'index.html'),
+          test: path.resolve(__dirname, 'test.html'),
         },
       },
     },
