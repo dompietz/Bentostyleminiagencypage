@@ -1,103 +1,92 @@
-import { defaultBentoGridContent } from "../components/BentoGrid";
 import "./Test2Page.css";
-
-const content = defaultBentoGridContent;
-
-const heroVideo = content.heroVideos[0];
 
 const cards = [
   {
-    type: "video" as const,
-    title: heroVideo?.title,
-    videoSrc: heroVideo?.src,
-    variant: "video",
-  },
-  {
-    title: "At Clix Productions",
-    description: content.about.body,
-    accent: "About",
+    title: "Pulse Studio",
+    description:
+      "We translate abstract ideas into motion-first stories with micro interactions that feel alive.",
     variant: "wide",
+    accent: "Story",
   },
   {
-    title: content.approach.heading,
-    paragraphs: content.approach.paragraphs,
-    accent: "Process",
+    title: "Launch Velocity",
+    description:
+      "A four-day design accelerator where we produce a shippable prototype, complete with user flows and copy.",
+    metricLabel: "Avg. turnaround",
+    metricValue: "96h",
     variant: "tall",
   },
   {
-    title: content.clipCasting.heading,
-    description: content.clipCasting.summary,
-    list: content.clipCasting.details,
-    accent: "Editorial", 
-  },
-  {
-    title: content.contact.heading,
-    list: content.contact.lines,
-    accent: "Connect",
-  },
-  {
-    title: content.announcement.heading,
-    description: content.announcement.body,
+    title: "Texture Lab",
+    description:
+      "Experimental surfaces and tactile palettes crafted to elevate immersive brand identities.",
     variant: "spotlight",
+  },
+  {
+    title: "Signals",
+    description:
+      "A curated library of insight reports covering trends in digital craft, motion, and experiential retail.",
+    metricLabel: "Fresh drops",
+    metricValue: "Weekly",
+  },
+  {
+    title: "Partnerships",
+    description:
+      "We integrate with product teams to embed design systems that scale across markets and modalities.",
+    metricLabel: "Retention",
+    metricValue: "92%",
+    variant: "wide",
+  },
+  {
+    title: "Sound Layering",
+    description:
+      "Immersive audio direction for spatial experiences—grounded in research, tuned for emotion.",
   },
 ];
 
 export default function Test2Page() {
   return (
     <main className="test2-page" role="main">
-      <section className="test2-page__grid" aria-label="Clix Productions overview">
-        {cards.map((card) => {
-          const variantClass = card.variant ? ` test2-card--${card.variant}` : "";
-          const hasVideo = card.type === "video" && card.videoSrc;
+      <section className="test2-page__hero">
+        <p className="test2-page__eyebrow">Experimental Workbench</p>
+        <h1>
+          Test2 showcases a tactile bento grid built for progressive creative teams.
+        </h1>
+        <p>
+          Explore modular stories, accelerators, and research capsules—each designed to
+          flex across touchpoints. The layout responds instantly, maintaining rhythm on
+          any device size.
+        </p>
+        <div className="test2-page__tags" aria-label="Focus areas">
+          <span>Motion design</span>
+          <span>Spatial audio</span>
+          <span>Brand systems</span>
+        </div>
+      </section>
 
-          return (
-            <article key={card.title ?? card.videoSrc} className={`test2-card${variantClass}`}>
-              {card.accent && !hasVideo && (
-                <span className="test2-card__accent" aria-hidden="true">
-                  {card.accent}
-                </span>
-              )}
-
-              {hasVideo ? (
-                <figure className="test2-card__video">
-                  <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    title={card.title ?? "Clix Productions showreel"}
-                  >
-                    <source src={card.videoSrc} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  {card.title && <figcaption>{card.title}</figcaption>}
-                </figure>
-              ) : (
-                <div className="test2-card__body">
-                  {card.title && <h2>{card.title}</h2>}
-
-                  {card.description && <p>{card.description}</p>}
-
-                  {Array.isArray(card.paragraphs) && (
-                    <div className="test2-card__stack">
-                      {card.paragraphs.map((paragraph, index) => (
-                        <p key={index}>{paragraph}</p>
-                      ))}
-                    </div>
-                  )}
-
-                  {Array.isArray(card.list) && (
-                    <ul className="test2-card__list">
-                      {card.list.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              )}
-            </article>
-          );
-        })}
+      <section className="test2-page__grid" aria-label="Capabilities and programs">
+        {cards.map((card) => (
+          <article
+            key={card.title}
+            className={`test2-card${card.variant ? ` test2-card--${card.variant}` : ""}`}
+          >
+            {card.accent && (
+              <span className="test2-card__accent" aria-hidden="true">
+                {card.accent}
+              </span>
+            )}
+            <div className="test2-card__body">
+              <h2>{card.title}</h2>
+              <p>{card.description}</p>
+            </div>
+            {card.metricLabel && card.metricValue && (
+              <dl className="test2-card__metric">
+                <dt>{card.metricLabel}</dt>
+                <dd>{card.metricValue}</dd>
+              </dl>
+            )}
+          </article>
+        ))}
       </section>
     </main>
   );
