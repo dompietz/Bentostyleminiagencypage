@@ -1,6 +1,7 @@
 import { Link, Route, Routes } from "react-router-dom";
 import { BentoGrid } from "./components/BentoGrid";
 import TestPage from "./pages/TestPage";
+import Test2Page from "./pages/Test2Page";
 
 function NotFound() {
   return (
@@ -85,6 +86,18 @@ function Navigation() {
       >
         Test Page
       </Link>
+      <Link
+        to="/test2"
+        style={{
+          fontSize: "0.95rem",
+          letterSpacing: "0.02em",
+          color: "white",
+          textDecoration: "none",
+          fontWeight: 500,
+        }}
+      >
+        Test2 Page
+      </Link>
     </nav>
   );
 }
@@ -96,6 +109,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<BentoGrid />} />
         <Route path="/test" element={<TestPage />} />
+        <Route path="/test2" element={<Test2Page />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
